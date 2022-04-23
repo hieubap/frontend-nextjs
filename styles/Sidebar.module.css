@@ -1,0 +1,13 @@
+.side_item_inner span {
+    transition: all 0.25s;
+}
+.side_item_inner span:hover {
+    color: #4caf50;
+}
+.side_item_inner .active {
+    border-radius: 15px;
+    background-image: linear-gradient(to right, #019707, #4caf50);
+}
+.side_item_inner .active span {
+    color: #fff;
+}
