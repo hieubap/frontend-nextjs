@@ -1,6 +1,10 @@
 .side_item_inner span {
     transition: all 0.25s;
 }
+
+
+/* TODO : config #4caf50 in tailwindcss.config.js */
+/* TODO : replace follow code with innerClass  hover:text-primary for same meaning */
 .side_item_inner span:hover {
     color: #4caf50;
 }

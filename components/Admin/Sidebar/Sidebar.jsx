@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Sidebar = () => {
+    console.log('sidebar render');
     const router = useRouter().asPath.slice(7);
     let activeItem;
     if (router !== "[route]") {

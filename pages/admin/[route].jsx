@@ -3,7 +3,9 @@ import React from "react";
 import AdminLayout from "../../components/AdminLayout";
 
 const page = () => {
-    return <AdminLayout />;
+    return <AdminLayout >
+        <h1>hello</h1>
+    </AdminLayout>;
 };
 
 export default page;

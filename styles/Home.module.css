@@ -108,6 +108,7 @@
     margin-left: 0.5rem;
 }
 
+/* TODO: use sm:w-full sm:flex-col instend , can config width device in tailwind.config.js */
 @media (max-width: 600px) {
     .grid {
         width: 100%;

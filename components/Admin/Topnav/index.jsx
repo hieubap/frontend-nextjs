@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "../../../styles/TopNav.module.css";
+
+
 const topNav = () => {
+    console.log('topNav render');
     return (
         <div className="flex p-8 items-center h-28 justify-between">
             <div className="h-12 flex items-center relative ">
