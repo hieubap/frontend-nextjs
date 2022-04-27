@@ -1,19 +1,20 @@
 import React from "react";
-import styles from "../../../styles/Sidebar.module.css";
-
+import { SidebarWrapper } from "./SidebarWrapper";
 const SidebarItem = props => {
     return (
-        <div className={`px-5 ${styles.side_item_inner}`}>
-            <div
-                className={`py-3.5 px-6 flex items-center  ${
-                    props.active ? styles.active : ""
-                }`}
-            >
-                <span className="font-semibold capitalize text-lg text-gray-500">
-                    {props.title}
-                </span>
+        <SidebarWrapper>
+            <div className={`px-5 sidebar_item`}>
+                <div
+                    className={`py-3.5 px-6 flex items-center hover:bg-gradient-to-r from-third to-fourth hover:rounded-2xl ${
+                        props.active ? "active" : ""
+                    }`}
+                >
+                    <span className="font-semibold capitalize text-lg text-gray-500 ">
+                        {props.title}
+                    </span>
+                </div>
             </div>
-        </div>
+        </SidebarWrapper>
     );
 };
 

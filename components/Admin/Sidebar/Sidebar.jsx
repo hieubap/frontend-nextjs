@@ -1,11 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import SidebarItem from "./SidebarItem";
 import sidebar_items from "../../../JsonData/sidebar_routes.json";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 const Sidebar = () => {
-    console.log('sidebar render');
+    console.log("sidebar render");
     const router = useRouter().asPath.slice(7);
     let activeItem;
     if (router !== "[route]") {
@@ -15,7 +15,7 @@ const Sidebar = () => {
     }
     return (
         <div
-            className="w-96 drop-shadow-md"
+            className="w-96 h-screen drop-shadow-md"
             style={{
                 boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
             }}
@@ -26,7 +26,7 @@ const Sidebar = () => {
                     alt=""
                     className="w-20 h-18"
                 />
-                <span className="text-sky-600 text-3xl font-bold">
+                <span className="text-secondary text-3xl font-bold">
                     Airsence
                 </span>
             </div>
