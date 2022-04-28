@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import "antd/dist/antd.css";
+import "../styles/antd.less";
 import "font-awesome/css/font-awesome.min.css";
 
 function MyApp({ Component, pageProps }) {
