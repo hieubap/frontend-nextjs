@@ -38,6 +38,7 @@ module.exports = {
                 'default' : '',
                 'primary' : '#4caf50',
                 'secondary' : '#019707',
+                "gr-1":"#56ff5c",
                 'third': '#c0ebc3',
                 'fourth':"#bee7c0",
                 'white-2':'#fafafb',
