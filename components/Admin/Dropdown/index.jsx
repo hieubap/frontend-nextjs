@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { Menu } from "@headlessui/react";
-import user_menu from "../../JsonData/user_menus.json";
-import noti_menu from "../../JsonData/notification.json";
+import user_menu from "../../../JsonData/user_menus.json";
+import noti_menu from "../../../JsonData/notification.json";
 const dropDown = ({ noti }) => {
   const list = user_menu;
   if (noti) {

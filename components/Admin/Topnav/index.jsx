@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import DropDown from "../../Dropdown";
+import DropDown from "../Dropdown";
 const topNav = () => {
   console.log("topNav render");
   return (
