@@ -10,7 +10,7 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import MenuBar from "./common/MenuBar";
-import useScreenDetect from "../src/hooks/useScreenDetect";
+import useScreenDetect from "../hooks/useScreenDetect";
 
 export default function AdminLayout({ children }) {
     const menuList = [

@@ -4,7 +4,7 @@ import {
   updateUser,
   updateSetting,
   appSelects,
-} from "../store/appReducer";
+} from "../../store/appReducer";
 import { isEmpty } from "../utils/opLodash";
 import { clearToken, setToken } from "../models/Base";
 

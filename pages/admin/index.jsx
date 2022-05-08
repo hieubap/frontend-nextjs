@@ -1,27 +1,38 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import AdminLayout from "../../components/AdminLayout";
-import useUser from "../../hooks/useUser";
-import { isEmpty } from "../../utils/opLodash";
-import CONSTANT from '../../utils/constant'
+import useUser from "../../src/hooks/useUser";
+import { isEmpty } from "../../src/utils/opLodash";
+import CONSTANT from "../../src/utils/constant";
 import { Spin } from "antd";
 
-const Page = () => {
-    const {user , manifests} = useUser()
-    const router = useRouter()
-    useEffect(()=>{
-        if(isEmpty(user) || !manifests.some(manifest=>[CONSTANT.SUPER_ADMIN_ROLE_ID ,CONSTANT.ADMIN_ROLE_ID , CONSTANT.SUB_ADMIN_ROLE_ID].includes(manifest))){
-            router.push('/admin/login')
+function Page({ ...props }) {
+    const router = useRouter();
+    const { manifests, user } = useUser();
+    useEffect(() => {
+        if (
+            isEmpty(user) ||
+            !manifests.some((manifest) =>
+                [
+                    CONSTANT.SUPER_ADMIN_ROLE_ID,
+                    CONSTANT.ADMIN_ROLE_ID,
+                    CONSTANT.SUB_ADMIN_ROLE_ID,
+                ].includes(manifest.id)
+            )
+        ) {
+            router.push("/admin/login");
         }
-    },[user])
-    if(isEmpty(user)){
-        return (<div  className="h-screen w-screen flex items-center justify-center">
-            <Spin/>
-        </div>)
+    }, [user]);
+    if (typeof window !== "undefined" && !user) {
+        return (
+            <div>
+                <Spin
+                    spinning
+                    className='w-screen h-screen flex justify-center items-center'
+                />
+            </div>
+        );
     }
-    return <AdminLayout >
-        <h1>hello</h1>
-    </AdminLayout>;
-};
+    return <div>home</div>;
+}
 
 export default Page;

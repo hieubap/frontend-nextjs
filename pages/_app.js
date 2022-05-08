@@ -1,11 +1,12 @@
-import "../styles/globals.css";
+import "../src/styles/globals.css";
 import "antd/dist/antd.css";
-import "../styles/App.scss";
-import "font-awesome/css/font-awesome.min.css";
-import { QueryClientProvider, QueryClient, useQuery } from "react-query";
+import "../src/styles/App.scss";
+import { QueryClientProvider, QueryClient } from "react-query";
 import { store } from "../store/store";
 import { Provider } from "react-redux";
-import AppWrapper from "../components/common/AppWrapper";
+import AppWrapper from "../src/components/AppWrapper";
+import { useRouter } from "next/router";
+import AdminLayout from "../src/components/AdminLayout";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -25,11 +26,20 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }) {
+    const router = useRouter();
+    const isAdminPortal = router.asPath.startsWith("/admin");
     return (
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
                 <AppWrapper queryClient={queryClient}>
-                    <Component {...pageProps} />
+                    {isAdminPortal ? (
+                        <AdminLayout>
+                            {" "}
+                            <Component {...pageProps} />{" "}
+                        </AdminLayout>
+                    ) : (
+                        <Component {...pageProps} />
+                    )}
                 </AppWrapper>
             </QueryClientProvider>
         </Provider>

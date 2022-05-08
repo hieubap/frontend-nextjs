@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
-import useUser from "../../src/hooks/useUser";
+import useUser from "../../hooks/useUser";
 import { useMutation } from "react-query";
-import user from "../../src/models/User";
+import user from "../../models/User";
 import { Button, Form, Input, Tag } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 

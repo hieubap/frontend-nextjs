@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import useUser from '../../hooks/useUser';
+import useUser from '../hooks/useUser';
 
 function AppWrapper({ children, queryClient, ...props }) {
     let { user } = useUser();
