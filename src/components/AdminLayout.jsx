@@ -32,6 +32,12 @@ export default function AdminLayout({ children }) {
                     url: "/admin/manage-account/collaborator",
                     isHide: false,
                 },
+                {
+                    id: "1.4",
+                    title: "Thông tin tài khoản",
+                    url: "/admin/manage-account/account",
+                    isHide: false,
+                },
             ],
         },
         {
@@ -151,7 +157,9 @@ export default function AdminLayout({ children }) {
                             h-20 tablet:h-16 mobile:h-14
                             shadow-xl fixed z-max top-0'
             >
-                <div>logo</div>
+                <div>
+                    <img src='/logo.jpg' />
+                </div>
                 <div className='flex tablet:gap-4 mobile:gap-3'>
                     <Avatar>S</Avatar>
                     <Button
