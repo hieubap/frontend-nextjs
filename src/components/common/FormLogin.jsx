@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import user from "../../models/User";
 import { Button, Form, Input, Tag } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 function FormLogin({ bgImage, routePass, ...props }) {
     const styling = {
@@ -93,7 +94,7 @@ function FormLogin({ bgImage, routePass, ...props }) {
                         >
                             Đăng nhập
                         </Button>
-                        <Button type='default' className='rounded-md w-full'>
+                        <Button onClick={() => router.push("/registor")} type='default' className='rounded-md w-full'>
                             Đăng ký
                         </Button>
                     </Form.Item>

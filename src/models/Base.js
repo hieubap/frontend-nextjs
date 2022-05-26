@@ -2,8 +2,8 @@ import Cookie from "js-cookie";
 import superagent from "superagent";
 import { notification } from "antd";
 import CONSTANT from "../utils/constant";
-// const API_ROOT = process.env.NEXT_PUBLIC_SERVER;
-const API_ROOT = process.env.NEXT_PUBLIC_SERVER_LOCAL;
+const API_ROOT = process.env.NEXT_PUBLIC_SERVER;
+// const API_ROOT = process.env.NEXT_PUBLIC_SERVER_LOCAL;
 
 export const setToken = (access) => {
   if (access) {
