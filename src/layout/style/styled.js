@@ -2,8 +2,12 @@ import styled from "styled-components";
 
 export const WrapperContainer = styled.div`
     padding: 20px;
-    .ant-breadcrumb {
-        margin-bottom: 15px;
+    .wrap-header {
+        display: flex;
+        .ant-breadcrumb {
+            margin-bottom: 15px;
+            flex: 1;
+        }
     }
     .wrap-table {
         /* padding: 10px; */

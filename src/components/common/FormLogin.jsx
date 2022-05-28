@@ -58,7 +58,7 @@ function FormLogin({ bgImage, routePass, ...props }) {
                 >
                     <Form.Item
                         label='Username'
-                        name='name'
+                        name='user_name'
                         rules={[
                             {
                                 required: true,

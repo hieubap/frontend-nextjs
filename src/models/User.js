@@ -11,5 +11,15 @@ class User extends Base {
   register(body) {
     return this.apiPost("/register", body);
   }
+
+  searchUser(param = {}){
+    return this.apiGet("/search", param);
+  }
+  update(body){
+    return this.apiPut("/self-update/" + body.id, body);
+  }
+  createUser(body){
+    return this.apiPost("/insert", body);
+  }
 }
 export default new User();
