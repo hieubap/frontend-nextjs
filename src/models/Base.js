@@ -39,9 +39,12 @@ const catchError = (e) => {
   let error = e.response?.body;
   if (e.status === CONSTANT.SERVER_ERROR_CODE) {
     notification.error({
-      message: "Đã có lỗi xảy ra, vui lòng thử lại sau ít phút.",
+      message: "Server đang bảo trì, vui lòng thử lại sau ít phút.",
     });
   }
+  notification.error({
+    message: "Đã có lỗi xảy ra",
+  });
   throw error;
 };
 

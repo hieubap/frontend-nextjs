@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import useUser from '../hooks/useUser';
 
-function AppWrapper({ children, queryClient, ...props }) {
+function AppWrapper({ children, ...props }) {
     let { user } = useUser();
-    useEffect(() => {
-        queryClient.clear();
-    }, [user?.id]);
+    // useEffect(() => {
+    //     queryClient.clear();
+    // }, [user?.id]);
     return <section>{children}</section>;
 }
 
