@@ -59,7 +59,7 @@ function FormLogin({ bgImage, routePass, ...props }) {
                 >
                     <Form.Item
                         label='Username'
-                        name='name'
+                        name='user_name'
                         rules={[
                             {
                                 required: true,
@@ -94,7 +94,11 @@ function FormLogin({ bgImage, routePass, ...props }) {
                         >
                             Đăng nhập
                         </Button>
-                        <Button onClick={() => router.push("/registor")} type='default' className='rounded-md w-full'>
+                        <Button
+                            onClick={() => router.push("/registor")}
+                            type='default'
+                            className='rounded-md w-full'
+                        >
                             Đăng ký
                         </Button>
                     </Form.Item>

@@ -32,6 +32,12 @@ export default function AdminLayout({ children }) {
                     url: "/admin/manage-account/collaborator",
                     isHide: false,
                 },
+                {
+                    id: "1.4",
+                    title: "Thông tin tài khoản",
+                    url: "/admin/manage-account/profile",
+                    isHide: false,
+                },
             ],
         },
         {
