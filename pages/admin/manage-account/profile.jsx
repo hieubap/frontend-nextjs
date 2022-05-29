@@ -2,15 +2,40 @@
 import React, { useEffect, useState } from "react";
 import { Spin, Tabs } from "antd";
 import styled from "styled-components";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, notification, message, Upload } from "antd";
 import useUser from "../../../src/hooks/useUser";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import getUserProfile from "../../../src/models/User";
 import useForm from "antd/lib/form/hooks/useForm";
-import { validatePhoneNumber2 } from "../../../src/utils/validator";
+import { Avatar } from "antd";
+import { UserOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    validateCompareOldPassword,
+    validatePassword,
+    validatePhoneNumber2,
+    validateRequireInput,
+} from "../../../src/utils/validator";
 
 const { TabPane } = Tabs;
 const ProfileWrapper = styled.div`
+    .profile_left {
+        .avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .anticon-user {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50%;
+                height: 50%;
+                svg {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
     .ant-tabs-content {
         justify-content: center;
     }
@@ -18,6 +43,13 @@ const ProfileWrapper = styled.div`
     .ant-form-item-control-input-content {
         display: flex;
         justify-content: center;
+        .ant-btn-loading-icon {
+            .anticon-loading {
+                margin-top: 4px;
+                display: flex;
+                align-items: center;
+            }
+        }
     }
 
     .ant-tabs-tab {
@@ -38,10 +70,12 @@ const ProfileWrapper = styled.div`
 `;
 
 function Profile({ ...props }) {
-    const { changerUser, user } = useUser();
+    const { changeUser, user } = useUser();
     const [formProfile] = useForm();
+    const [formChangePass] = useForm();
+    const [loadingBt, setLoadingBt] = useState(false);
     // const [formChangePass] = useForm();
-    const { data, isLoading, error } = useQuery(
+    const { data, isLoading, error, refetch } = useQuery(
         "userInfo",
         () => getUserProfile.getUser(user.id),
         {
@@ -50,24 +84,54 @@ function Profile({ ...props }) {
             },
         }
     );
+    const changeProfile = useMutation(
+        "changeProfile",
+        (body) => getUserProfile.changeProFile(body, user.id),
+        {
+            onSuccess: (data) => {
+                notification.success({
+                    message: "Cập nhật thông tin thành công!",
+                });
+                refetch(data);
+            },
+        }
+    );
+    const changePw = useMutation(
+        "changePw",
+        (body) => getUserProfile.changePassword(body),
+        {
+            onSuccess: (data) => {
+                notification.success({
+                    message: "Cập nhật mật khẩu thành công!",
+                });
+            },
+        }
+    );
+    // console.log(isLoading);
     const onFinish = () => {
-        // console.log("Success:", values);
-        // if (
-        //     !values.address &&
-        //     !values.user_name &&
-        //     !values.full_name &&
-        //     !values.phone &&
-        //     !values.contact
-        // ) {
-        // }
+        setLoadingBt(true);
         formProfile.validateFields().then((values) => {
-            // TODO : call update api here
+            changeProfile.mutate(values);
+            setTimeout(() => {
+                setLoadingBt(false);
+            }, 2000);
+        });
+    };
+    const onChangePw = () => {
+        setLoadingBt(true);
+        formChangePass.validateFields().then((values) => {
+            let dataPw = {
+                oldPassword: values.oldPassword,
+                newPassword: values.newPassword,
+            };
+            console.log(dataPw);
+            changePw.mutate(values);
+            setTimeout(() => {
+                setLoadingBt(false);
+            }, 2000);
         });
     };
 
-    // const onFinishFailed = (errorInfo) => {
-    //     console.log("Failed:", errorInfo);
-    // };
     return (
         <ProfileWrapper>
             <div className='px-7 py-4'>
@@ -83,21 +147,20 @@ function Profile({ ...props }) {
                     <Tabs defaultActiveKey='1'>
                         <TabPane tab='Chinh sửa thông tin tài khoản' key='1'>
                             <Spin spinning={isLoading}>
-                                <div className='mt-20 flex mobile:block laptop2:gap-x-10 gap-x-20'>
+                                <div className='mt-20 flex tablet:block laptop2:gap-x-10 gap-x-20'>
                                     <div className='profile_left'>
-                                        <img
-                                            src='/user-icon.png'
-                                            alt='avatar'
-                                            className='rounded-full w-64 mx-auto laptop2:w-52'
+                                        <Avatar
+                                            className='avatar rounded-full w-64 mx-auto laptop2:w-52 h-64 laptop2:w-52'
+                                            icon={<UserOutlined />}
                                         />
-                                        <h3 className='text-center mobile:mb-10 mt-6 font-semibold text-xl'>
+                                        <h3 className='text-center tablet:mb-10 mt-6 font-semibold text-xl'>
                                             {data?.user_name}
                                         </h3>
                                     </div>
-                                    <div className='profile_right mobile:w-full w-3/5'>
+                                    <div className='profile_right tablet:w-4/5 w-3/5 mobile:w-full'>
                                         <Form
                                             form={formProfile}
-                                            name='basic'
+                                            name='profile'
                                             labelCol={{ span: 8 }}
                                             wrapperCol={{ span: 16 }}
                                             onFinish={onFinish}
@@ -107,6 +170,11 @@ function Profile({ ...props }) {
                                             <Form.Item
                                                 label='Username:'
                                                 name='user_name'
+                                                rules={[
+                                                    validateRequireInput(
+                                                        "Vui lòng không bỏ trống mục này"
+                                                    ),
+                                                ]}
                                             >
                                                 <Input
                                                     className='rounded-lg'
@@ -128,13 +196,12 @@ function Profile({ ...props }) {
                                             >
                                                 <Input
                                                     disabled
-                                                    placeholder='Nhập địa chỉ email'
                                                     className='rounded-lg'
                                                 />
                                             </Form.Item>
                                             <Form.Item
                                                 label='Địa chỉ liên hệ:'
-                                                name='address'
+                                                name='contact'
                                             >
                                                 <Input
                                                     className='rounded-lg'
@@ -143,7 +210,7 @@ function Profile({ ...props }) {
                                             </Form.Item>
                                             <Form.Item
                                                 label='Số điện thoại:'
-                                                name='phone'
+                                                name='phone_number'
                                                 rules={[
                                                     validatePhoneNumber2(
                                                         "Số điện thoại không đúng định dạng"
@@ -151,7 +218,7 @@ function Profile({ ...props }) {
                                                 ]}
                                             >
                                                 <Input
-                                                    className='rounded-lg'
+                                                    className='rounded-lgh'
                                                     placeholder='Nhập số điện thoại'
                                                 />
                                             </Form.Item>
@@ -159,10 +226,10 @@ function Profile({ ...props }) {
                                                 <Button
                                                     type='primary'
                                                     htmlType='submit'
-                                                    className='rounded-lg mt-10'
-                                                    // loading={}
+                                                    className='rounded-lg mt-10 w-30'
+                                                    loading={loadingBt}
                                                 >
-                                                    Submit
+                                                    {loadingBt ? "" : "Submit"}
                                                 </Button>
                                             </Form.Item>
                                         </Form>
@@ -176,18 +243,17 @@ function Profile({ ...props }) {
                             className='mobile:w-full w-3/5 mt-20'
                         >
                             <Form
-                                // form={formChangePass}
-                                name='basic'
+                                form={formChangePass}
+                                name='passwordChange'
                                 labelCol={{ span: 8 }}
                                 wrapperCol={{ span: 16 }}
-                                initialValues={{ remember: true }}
-                                onFinish={onFinish}  // viet ham on finish khac
+                                onFinish={onChangePw} // viet ham on finish khac
                                 // onFinishFailed={onFinishFailed}
                                 autoComplete='off'
                             >
                                 <Form.Item
                                     label='Mật khẩu hiện tại'
-                                    name='password'
+                                    name='oldPassword'
                                     rules={[
                                         {
                                             required: true,
@@ -201,25 +267,60 @@ function Profile({ ...props }) {
 
                                 <Form.Item
                                     label='Mật khẩu mới'
-                                    name='new-password'
+                                    name='newPassword'
+                                    dependencies={["oldPassword"]}
                                     rules={[
-                                        {
-                                            required: true,
-                                            message: "Nhập mật khẩu mới!",
-                                        },
+                                        validatePassword(
+                                            "Mật khẩu không đúng định dạng"
+                                        ),
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (
+                                                    !value ||
+                                                    getFieldValue(
+                                                        "oldPassword"
+                                                    ) !== value
+                                                ) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(
+                                                    new Error(
+                                                        "Mật khẩu không được giống mật khẩu cũ"
+                                                    )
+                                                );
+                                            },
+                                        }),
                                     ]}
                                 >
                                     <Input.Password className='rounded-lg' />
                                 </Form.Item>
                                 <Form.Item
                                     label='Xác nhận Mật khẩu mới'
-                                    name='cf-new-password'
+                                    name='cfNewPassword'
+                                    dependencies={["newPassword"]}
                                     rules={[
                                         {
                                             required: true,
                                             message:
                                                 "Hãy nhập lại mật khẩu mới!",
                                         },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (
+                                                    !value ||
+                                                    getFieldValue(
+                                                        "newPassword"
+                                                    ) === value
+                                                ) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(
+                                                    new Error(
+                                                        "Mật khẩu mới không trùng khớp!"
+                                                    )
+                                                );
+                                            },
+                                        }),
                                     ]}
                                 >
                                     <Input.Password className='rounded-lg' />
@@ -229,9 +330,10 @@ function Profile({ ...props }) {
                                     <Button
                                         type='primary'
                                         htmlType='submit'
-                                        className='rounded-lg mt-10'
+                                        className='rounded-lg mt-10 w-30'
+                                        loading={loadingBt}
                                     >
-                                        Submit
+                                        {loadingBt ? "" : "Submit"}
                                     </Button>
                                 </Form.Item>
                             </Form>
