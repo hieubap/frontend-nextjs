@@ -3,11 +3,19 @@ import Head from "next/head";
 import styles from "../src/styles/Home.module.css";
 import useUser from "../src/hooks/useUser";
 import { isEmpty } from "../src/utils/opLodash";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Main() {
     const { user, clearUser } = useUser();
+    const router = useRouter();
+    useEffect(() => {
+        // tạm thời tập trung phần admin trước
+        router.push('/admin')
+    }, []);
+    if(isEmpty(user)) return <div></div>
     return (
-        <div className={styles.container}>
+        <div>
             <Head>
                 <title>Create Next App</title>
                 <meta

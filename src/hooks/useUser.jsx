@@ -24,7 +24,6 @@ export default function useUser() {
       dispatch(updateUser({}));
       localStorage.removeItem("user");
     } else {
-      newUser.data.password = "***";
       dispatch(updateUser(newUser.data));
       localStorage.setItem("user", JSON.stringify(newUser.data));
       setToken(newUser.token);

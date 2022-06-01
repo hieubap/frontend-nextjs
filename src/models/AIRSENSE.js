@@ -1,5 +1,6 @@
 import moment from "moment";
 import { trim, isEqual } from "../utils/opLodash";
+import { FEATURE_PERMISSION } from "../utils/constant";
 class AIRSENSE {
   formatTime = (
     timestamp,
@@ -55,6 +56,11 @@ class AIRSENSE {
       valueFormat = parseInt(trim(value.toString()).replaceAll(/\D/g, ""), 10);
     }
     return valueFormat || 0;
+  };
+
+  canAccessFuture = (featureCode, permissions) => {
+    const arrPermissionName = permissions?.map(item=>item.name) || []
+    return arrPermissionName?.includes(featureCode) || false
   };
 }
 

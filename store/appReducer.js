@@ -35,20 +35,21 @@ export const { updateUser, updateSetting, changeStatus } = appSlice.actions;
 
 const stateApp = (state) => state.app;
 const selectUser = createSelector(stateApp, (app) => app.user);
-const selectUserManifest = createSelector(stateApp, (app) => {
-  if (!isEmpty(app?.user?.manifests)) {
-    return app.user.manifests.map((manifest) => ({
+const selectUserManifest = createSelector(stateApp, (state) => {
+  if (!isEmpty(state?.user?.Manifests)) {
+    return state.user.Manifests.map((manifest) => ({
       id: manifest.id,
       name: manifest.role_name,
+      content : manifest.content
     }));
   }
   return [];
 });
-const selectUserPermissions = createSelector(stateApp, (app) => {
+const selectUserPermissions = createSelector(stateApp, (state) => {
   const permissionList = [];
-  if (!isEmpty(app?.user?.manifests)) {
-    app.user.manifests.forEach((manifest) =>
-      permissionList.push(manifest.permissions)
+  if (!isEmpty(state?.user?.Manifests)) {
+    state.user.Manifests.forEach((manifest) =>
+      permissionList.push(...manifest.Permissions)
     );
     return uniqBy(permissionList, "id");
   }
