@@ -9,17 +9,15 @@ import {
     UnorderedListOutlined,
     UserOutlined,
 } from "@ant-design/icons";
-// import MenuBar from "./common/MenuBar";
-import dynamic from "next/dynamic";
+import MenuBar from "./common/MenuBar";
 import useScreenDetect from "../hooks/useScreenDetect";
 import useUser from "../hooks/useUser";
 import AIRSENSE from "../models/AIRSENSE";
 import { FEATURE_PERMISSION } from "../utils/constant";
-
-const MenuBar = dynamic(() => import("./common/MenuBar"), { ssr: false });
+import { isEmpty } from "../utils/opLodash";
 
 export default function AdminLayout({ children }) {
-    let {  permissions } = useUser();
+    let { permissions, user } = useUser();
 
     const menuList = (permissions) => [
         {
@@ -149,13 +147,19 @@ export default function AdminLayout({ children }) {
         },
     ];
     const [isShowDrawer, setShowDrawer] = useState(false);
+    const [isHaveUser, setHaveUser] = useState(false);
     const { isTablet, isMobile } = useScreenDetect();
     useEffect(() => {
         if (!isMobile && !isTablet) {
             setShowDrawer(false);
         }
     }, [isMobile, isTablet]);
-    console.log(permissions);
+    useEffect(() => {
+        if (isEmpty(user)) {
+            setHaveUser(false);
+        } else setHaveUser(true);
+    }, [user]);
+    if (!isHaveUser) return null;
     return (
         <section>
             <Drawer
@@ -199,13 +203,12 @@ export default function AdminLayout({ children }) {
                 </div>
                 <div
                     className='bg-main w-full
-                        p-8 tablet:p-6 mobile:p-4
+                        p-6 tablet:p-4
                         ml-64 tablet:ml-0
                         mt-20'
                 >
-                    <div className='bg-white shadow-lg w-full min-h-screen'>
-                        {children}
-                    </div>
+                    {children}
+
                 </div>
             </div>
         </section>

@@ -12,6 +12,7 @@ function Page({ ...props }) {
         if (isEmpty(user)) {
             setSpin(true);
             router.push("/dashboard-login");
+            setSpin(false)
         }
     }, [user]);
 
