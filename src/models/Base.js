@@ -42,6 +42,15 @@ const catchError = (e) => {
       message: "Server đang bảo trì, vui lòng thử lại sau ít phút.",
     });
   }
+  else if (e.status === CONSTANT.NOT_AUTHEN_CODE) {
+    notification.error({
+      message: "Đã hết phiên làm việc vui lòng đăng nhập lại.",
+    });
+    setTimeout(() => {
+      window.location.href = "/login"
+    },1000)
+  }
+  else
   notification.error({
     message: "Đã có lỗi xảy ra",
   });

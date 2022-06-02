@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const WrapperContainer = styled.div`
+    max-width: calc(100vw - 330px);
     padding: 20px;
     .wrap-header {
         display: flex;
@@ -8,6 +9,10 @@ export const WrapperContainer = styled.div`
             margin-bottom: 15px;
             flex: 1;
         }
+    }
+    .wrap-search {
+        display: flex;
+        margin-bottom: 10px;
     }
     .wrap-table {
         /* padding: 10px; */
@@ -31,5 +36,11 @@ export const WrapperContainer = styled.div`
                 color: #2c3d94;
             }
         }
+    }
+
+    .ant-spin-text {
+        color: red;
+        font-weight: bold;
+        font-size: 18px;
     }
 `;

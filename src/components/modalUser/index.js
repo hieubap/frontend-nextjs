@@ -9,13 +9,17 @@ const ModalUser = ({ data = {}, reload = () => {}, onCancel }) => {
     useEffect(() => {
         form.setFieldsValue(data);
     }, []);
-    const apiUpdate = useMutation("update", (param) => User.update(param), {
-        onSuccess: (data) => {
-            reload();
-            console.log(data, "success search user");
-            // setState({});
-        },
-    });
+    const apiUpdate = useMutation(
+        "update",
+        (param) => User.update(param, data.id),
+        {
+            onSuccess: (data) => {
+                reload();
+                console.log(data, "success search user");
+                // setState({});
+            },
+        }
+    );
 
     const apiCreate = useMutation("create", (param) => User.createUser(param), {
         onSuccess: (data) => {

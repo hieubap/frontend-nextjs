@@ -1,5 +1,9 @@
-import { EditOutlined, FileTextOutlined } from "@ant-design/icons";
-import { Tooltip } from "antd";
+import {
+    DeleteOutlined,
+    EditOutlined,
+    FileTextOutlined,
+} from "@ant-design/icons";
+import { Popconfirm, Tooltip } from "antd";
 import React, { forwardRef } from "react";
 
 const typeMap = {
@@ -10,6 +14,11 @@ const typeMap = {
     edit: {
         component: EditOutlined,
         title: "Chỉnh sửa",
+    },
+    delete: {
+        component: DeleteOutlined,
+        title: "Xóa",
+        color: "red",
     },
 };
 
@@ -25,7 +34,18 @@ const Action = ({ type = "description", onClick = () => {}, title }, ref) => {
 
     return (
         <Tooltip title={title || Icon.title}>
-            <Icon.component style={style} onClick={onClick} />
+            {type === "delete" ? (
+                <Popconfirm
+                    title='Bạn có chắc muốn xóa bản ghi này không ?'
+                    onConfirm={onClick}
+                    okText='Xóa'
+                    cancelText='Hủy'
+                >
+                    <Icon.component style={{ ...style, color: "red" }} />
+                </Popconfirm>
+            ) : (
+                <Icon.component style={style} onClick={onClick} />
+            )}
         </Tooltip>
     );
 };

@@ -21,5 +21,8 @@ class User extends Base {
   createUser(body){
     return this.apiPost("/insert", body);
   }
+  updateUser(body,id){
+    return this.apiPut("/update/" + id, body);
+  }
 }
 export default new User();
