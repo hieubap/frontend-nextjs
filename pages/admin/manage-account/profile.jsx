@@ -267,7 +267,7 @@ function Profile({ ...props }) {
                                             </Form.Item>
                                             <Form.Item
                                                 label='Số điện thoại:'
-                                                name='phone_number'
+                                                name='phone'
                                                 rules={[
                                                     validatePhoneNumber2(
                                                         "Số điện thoại không đúng định dạng"
