@@ -74,25 +74,29 @@ function Profile({ ...props }) {
     const [formProfile] = useForm();
     const [formChangePass] = useForm();
     const [loadingBt, setLoadingBt] = useState(false);
-    // const [formChangePass] = useForm();
     const { data, isLoading, error, refetch } = useQuery(
         "userInfo",
-        () => getUserProfile.getUser(user.id),
+        () => getUserProfile.getUser(),
         {
             onSuccess: (res) => {
                 formProfile.setFieldsValue(res);
             },
         }
     );
+    console.log(data);
     const changeProfile = useMutation(
         "changeProfile",
         (body) => getUserProfile.changeProFile(body, user.id),
         {
             onSuccess: (data) => {
+                console.log(data);
                 notification.success({
                     message: "Cập nhật thông tin thành công!",
                 });
                 refetch(data);
+            },
+            onError: (err) => {
+                notification.error(err);
             },
         }
     );
@@ -110,12 +114,17 @@ function Profile({ ...props }) {
     // console.log(isLoading);
     const onFinish = () => {
         setLoadingBt(true);
-        formProfile.validateFields().then((values) => {
-            changeProfile.mutate(values);
-            setTimeout(() => {
-                setLoadingBt(false);
-            }, 2000);
-        });
+        formProfile
+            .validateFields()
+            .then((values) => {
+                changeProfile.mutate(values);
+                setTimeout(() => {
+                    setLoadingBt(false);
+                }, 2000);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     const onChangePw = () => {
         setLoadingBt(true);
@@ -154,7 +163,7 @@ function Profile({ ...props }) {
                                             icon={<UserOutlined />}
                                         />
                                         <h3 className='text-center tablet:mb-10 mt-6 font-semibold text-xl'>
-                                            {data?.user_name}
+                                            {data?.last_name}
                                         </h3>
                                     </div>
                                     <div className='profile_right tablet:w-4/5 w-3/5 mobile:w-full'>
@@ -168,13 +177,8 @@ function Profile({ ...props }) {
                                             autoComplete='off'
                                         >
                                             <Form.Item
-                                                label='Username:'
-                                                name='user_name'
-                                                rules={[
-                                                    validateRequireInput(
-                                                        "Vui lòng không bỏ trống mục này"
-                                                    ),
-                                                ]}
+                                                label='First Name:'
+                                                name='first_name'
                                             >
                                                 <Input
                                                     className='rounded-lg'
@@ -182,8 +186,8 @@ function Profile({ ...props }) {
                                                 />
                                             </Form.Item>
                                             <Form.Item
-                                                label='Họ và tên:'
-                                                name='full_name'
+                                                label='Last Name:'
+                                                name='last_name'
                                             >
                                                 <Input
                                                     className='rounded-lg'
