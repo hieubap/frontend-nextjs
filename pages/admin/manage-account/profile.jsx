@@ -2,8 +2,18 @@
 import React, { useEffect, useState } from "react";
 import { Spin, Tabs } from "antd";
 import styled from "styled-components";
-import { Button, Form, Input, notification, message, Upload } from "antd";
+import {
+    Button,
+    Form,
+    Input,
+    notification,
+    message,
+    Upload,
+    DatePicker,
+    Select,
+} from "antd";
 import useUser from "../../../src/hooks/useUser";
+import moment from "moment";
 import { useMutation, useQuery } from "react-query";
 import getUserProfile from "../../../src/models/User";
 import useForm from "antd/lib/form/hooks/useForm";
@@ -17,6 +27,7 @@ import {
 } from "../../../src/utils/validator";
 
 const { TabPane } = Tabs;
+const { Option } = Select;
 const ProfileWrapper = styled.div`
     .profile_left {
         .avatar {
@@ -51,6 +62,11 @@ const ProfileWrapper = styled.div`
             }
         }
     }
+    .date {
+        .ant-form-item-control-input-content {
+            justify-content: start;
+        }
+    }
 
     .ant-tabs-tab {
         &.ant-tabs-tab-active {
@@ -79,7 +95,15 @@ function Profile({ ...props }) {
         () => getUserProfile.getUser(),
         {
             onSuccess: (res) => {
-                formProfile.setFieldsValue(res);
+                formProfile.setFieldsValue({
+                    firstName: res.first_name,
+                    lastName: res.last_name,
+                    email: res.email,
+                    dob: moment(res.date_of_birth),
+                    gender: res.gender,
+                    contact: res.contact,
+                    phone: res.phone_number,
+                });
             },
         }
     );
@@ -112,19 +136,29 @@ function Profile({ ...props }) {
         }
     );
     // console.log(isLoading);
-    const onFinish = () => {
-        setLoadingBt(true);
-        formProfile
-            .validateFields()
-            .then((values) => {
-                changeProfile.mutate(values);
-                setTimeout(() => {
-                    setLoadingBt(false);
-                }, 2000);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const onFinish = (values) => {
+        // setLoadingBt(true);
+        let data = {
+            first_name: values.firstName,
+            last_name: values.lastName,
+            email: values.email,
+            date_of_birth: moment(values.dob).format("YYYY/MM/DD"),
+            gender: values.gender,
+            contact: values.contact,
+            phone_number: values.phone,
+        };
+        console.log(data);
+        // formProfile
+        //     .validateFields()
+        //     .then((values) => {
+        //         changeProfile.mutate(values);
+        //         setTimeout(() => {
+        //             setLoadingBt(false);
+        //         }, 2000);
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
     };
     const onChangePw = () => {
         setLoadingBt(true);
@@ -178,7 +212,7 @@ function Profile({ ...props }) {
                                         >
                                             <Form.Item
                                                 label='First Name:'
-                                                name='first_name'
+                                                name='firstName'
                                             >
                                                 <Input
                                                     className='rounded-lg'
@@ -187,7 +221,7 @@ function Profile({ ...props }) {
                                             </Form.Item>
                                             <Form.Item
                                                 label='Last Name:'
-                                                name='last_name'
+                                                name='lastName'
                                             >
                                                 <Input
                                                     className='rounded-lg'
@@ -204,6 +238,27 @@ function Profile({ ...props }) {
                                                 />
                                             </Form.Item>
                                             <Form.Item
+                                                label='Ngày sinh'
+                                                name='dob'
+                                                className='date'
+                                            >
+                                                <DatePicker />
+                                            </Form.Item>
+                                            <Form.Item
+                                                label='Giới tính'
+                                                name='gender'
+                                            >
+                                                <Select placeholder='Chọn một trong số các lựa chọn'>
+                                                    <Option value='1'>
+                                                        Nam
+                                                    </Option>
+                                                    <Option value='2'>
+                                                        Nữ
+                                                    </Option>
+                                                </Select>
+                                            </Form.Item>
+
+                                            <Form.Item
                                                 label='Địa chỉ liên hệ:'
                                                 name='contact'
                                             >
@@ -214,7 +269,7 @@ function Profile({ ...props }) {
                                             </Form.Item>
                                             <Form.Item
                                                 label='Số điện thoại:'
-                                                name='phone_number'
+                                                name='phone'
                                                 rules={[
                                                     validatePhoneNumber2(
                                                         "Số điện thoại không đúng định dạng"
@@ -226,6 +281,7 @@ function Profile({ ...props }) {
                                                     placeholder='Nhập số điện thoại'
                                                 />
                                             </Form.Item>
+
                                             <Form.Item className='justify-center'>
                                                 <Button
                                                     type='primary'
