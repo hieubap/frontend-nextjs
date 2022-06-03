@@ -66,8 +66,6 @@ const ProfileWrapper = styled.div`
         .ant-form-item-control-input-content {
             justify-content: start;
         }
-    }
-
     .ant-tabs-tab {
         &.ant-tabs-tab-active {
             position: relative;
@@ -269,7 +267,7 @@ function Profile({ ...props }) {
                                             </Form.Item>
                                             <Form.Item
                                                 label='Số điện thoại:'
-                                                name='phone'
+                                                name='phone_number'
                                                 rules={[
                                                     validatePhoneNumber2(
                                                         "Số điện thoại không đúng định dạng"
