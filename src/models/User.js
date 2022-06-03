@@ -11,8 +11,8 @@ class User extends Base {
     register(body) {
         return this.apiPost("/register", body);
     }
-    getUser(id) {
-        return this.apiGet(`/detail/${id}`);
+    getUser() {
+        return this.apiGet(`/info`);
     }
     changeProFile(body, id) {
         return this.apiPut(`/self-update/${id}`, body);
