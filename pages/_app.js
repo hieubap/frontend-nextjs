@@ -6,7 +6,6 @@ import { store } from "../store/store";
 import { Provider } from "react-redux";
 import { useRouter } from "next/router";
 import AdminLayout from "../src/components/AdminLayout";
-import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -27,15 +26,10 @@ const queryClient = new QueryClient({
 
 function MyApp({ Component, pageProps }) {
     const router = useRouter();
-    const [isAdminPortal, setIsAdminPage] = useState(false);
-    useEffect(() => {
-        setIsAdminPage(router.asPath.startsWith("/admin"));
-    }, [router.asPath]);
-
     return (
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-                {isAdminPortal ? (
+                {router.asPath.startsWith("/admin") ? (
                     <AdminLayout>
                         <Component {...pageProps} />
                     </AdminLayout>

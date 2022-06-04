@@ -17,14 +17,16 @@ class Manifest extends Base {
         return this.apiPut(`/update/${id}`, body);
     }
 
-    toggleActive(id) {}
+    toggleActive(id) {
+        return this.apiPut(`/toggle-active/${id}`);
+    }
 
     delete(id) {
-        this.apiDelete(`delete/${id}`);
+        return this.apiDelete(`/delete/${id}`);
     }
 
     detail(id) {
-        this.apiGet(`detail/${id}`);
+        return this.apiGet(`/detail/${id}`);
     }
 }
 

@@ -3,7 +3,7 @@ import superagent from "superagent";
 import { notification } from "antd";
 import CONSTANT from "../utils/constant";
 
-const API_ROOT = process.env.NEXT_PUBLIC_SERVER;
+export const API_ROOT = process.env.NEXT_PUBLIC_SERVER;
 // const API_ROOT = process.env.NEXT_PUBLIC_SERVER_LOCAL;
 
 export const setToken = (access) => {
@@ -30,13 +30,10 @@ const attachToken = (req) => {
     }
 };
 const responseBody = (res) => {
-    // if (res.status === CONSTANT.CREATED_CODE) {
-    //     notification.success({
-    //         message: "Thành công",
-    //     });
-    //     console.log("ok");
-    // }
-    // // more if block here
+    if (res.status === CONSTANT.CREATED_CODE) {
+        notification.success({ message: "Cập nhật thành công" });
+    }
+    // more if block here
     return res.body ? res.body : res.text;
 };
 const catchError = (e) => {
@@ -50,6 +47,7 @@ const catchError = (e) => {
             message: "Đã có lỗi xảy ra",
         });
     }
+
     throw error;
 };
 

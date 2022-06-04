@@ -2,7 +2,7 @@ import EmptyContentTable from "../components/common/EmptyContentTable";
 import React from "react";
 import { useQuery } from "react-query";
 import { useRouter } from "next/router";
-import useQueryUrlWithKey from "./useQueryUrlWithKey";
+import useQueryUrl from "./useQueryUrl";
 
 const DEFAULT_DATA = {
     content: [],
@@ -29,11 +29,9 @@ export default function usePagination(
     keyQuery = "",
     queryConfig = {}
 ) {
-    const query = useQueryUrlWithKey(keyQuery);
-
-    const history = useRouter();
-    // const history = useHistory();
-    const pathname = history.pathname;
+    const query = useQueryUrl();
+    const router = useRouter();
+    const asPath = router.asPath;
 
     const page = parseInt(query.get("page"), 10) || 1;
     const pageSize =
@@ -49,7 +47,7 @@ export default function usePagination(
         isFetching,
         refetch: refetchList,
     } = useQuery(
-        [`usePagination.${keyQuery || pathname}`, query.toString()],
+        [`usePagination.${keyQuery || asPath}`, query.toString()],
         async () => {
             if (!sort) {
                 sort = null;
@@ -57,7 +55,7 @@ export default function usePagination(
             try {
                 const res = await callFn({
                     ...defaultParams,
-                    page: page - 1,
+                    page: page,
                     size: pageSize,
                     sort,
                     ...getExtraParams(query, extra),
@@ -84,14 +82,16 @@ export default function usePagination(
         Object.keys(params)
             .sort()
             .forEach((key) => {
-                if (params[key] === undefined) {
+                if (params[key] == undefined ) {
                     query.delete(key);
                 } else {
                     query.set(key, params[key]);
                 }
             });
-        const oldLocation = history.pathname;
-        history.push(oldLocation, +query.toString());
+        router.push({
+            pathname: router.pathname,
+            query: query.toString(),
+        });
     }
 
     const onChangeOneParam =
@@ -125,7 +125,7 @@ export default function usePagination(
         }
     }
 
-    const { content, total, totalElements } = data;
+    const { rows: content, count: total } = data;
 
     const refetch = async () => {
         const { data: dataRs } = await refetchList();
@@ -164,7 +164,7 @@ export default function usePagination(
         page,
         pageSize,
         content,
-        total: total || totalElements,
+        total: total,
         sort,
         query,
         getParamNull: (key) => {
@@ -185,10 +185,9 @@ export default function usePagination(
             pagination: {
                 current: page,
                 pageSize,
-                total: total || totalElements,
+                total: total,
                 onChange: onPageChange,
-                showSizeChanger:
-                    (total || totalElements) > 0 && !defaultParams.pageSize,
+                showSizeChanger: total > 0 && !defaultParams.pageSize,
                 position: ["bottomCenter"],
                 pageSizeOptions: [10, 20, 50],
             },

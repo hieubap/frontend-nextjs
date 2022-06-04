@@ -1,8 +1,11 @@
 import React from "react";
 import FormLogin from "../src/components/common/FormLogin";
+import { useRouter } from "next/router";
 
 function DashboardLogin({ ...props }) {
-    return <FormLogin routePass={"/admin"} bgImage={"/bg1.jpg"} />;
+    const router= useRouter()
+
+    return <FormLogin routePass={router.query.backUrl || "/admin"} bgImage={"/bg1.jpg"} />;
 }
 
 export default DashboardLogin;

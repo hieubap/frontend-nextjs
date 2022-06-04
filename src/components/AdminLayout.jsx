@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Drawer, Menu } from "antd";
+import { Avatar, Button, Drawer, Dropdown, Menu } from "antd";
 import {
+    AndroidOutlined,
     CodeOutlined,
     FileSearchOutlined,
     NodeIndexOutlined,
@@ -14,11 +15,13 @@ import useScreenDetect from "../hooks/useScreenDetect";
 import useUser from "../hooks/useUser";
 import AIRSENSE from "../models/AIRSENSE";
 import { FEATURE_PERMISSION } from "../utils/constant";
-import { isEmpty } from "../utils/opLodash";
+import { useQuery } from "react-query";
+import User from "../models/User";
+import { useRouter } from "next/router";
 
 export default function AdminLayout({ children }) {
-    let { permissions, user } = useUser();
-
+    let { permissions, clearUser, user } = useUser();
+    const router = useRouter();
     const menuList = (permissions) => [
         {
             id: 1,
@@ -146,6 +149,8 @@ export default function AdminLayout({ children }) {
             isHide: false,
         },
     ];
+    const menu = menuList(permissions || []);
+
     const [isShowDrawer, setShowDrawer] = useState(false);
     const [isHaveUser, setHaveUser] = useState(false);
     const { isTablet, isMobile } = useScreenDetect();
@@ -154,11 +159,21 @@ export default function AdminLayout({ children }) {
             setShowDrawer(false);
         }
     }, [isMobile, isTablet]);
-    useEffect(() => {
-        if (isEmpty(user)) {
+
+    useQuery("getInfo", () => User.getInfo(), {
+        enabled: typeof window !== "undefined",
+        onSuccess: () => {
+            setHaveUser(true);
+        },
+        onError: (e) => {
+            router.push({
+                pathname: "/dashboard-login",
+                backUrl: router.pathname,
+            });
             setHaveUser(false);
-        } else setHaveUser(true);
-    }, [user]);
+        },
+    });
+
     if (!isHaveUser) return null;
     return (
         <section>
@@ -173,7 +188,7 @@ export default function AdminLayout({ children }) {
                 <MenuBar
                     className='w-full min-h-max overflow-auto overflow-x-hidden beauty-scroll text-base'
                     mode='inline'
-                    menuList={menuList(permissions || [])}
+                    menuList={menu}
                 />
             </Drawer>
             <div
@@ -183,7 +198,28 @@ export default function AdminLayout({ children }) {
             >
                 <div>logo</div>
                 <div className='flex tablet:gap-4 mobile:gap-3'>
-                    <Avatar>S</Avatar>
+                    <Dropdown
+                        trigger='click'
+                        overlay={
+                            <Menu mode='vertical'>
+                                <Menu.Item key='1'>
+                                    Thông tin tài khoản
+                                </Menu.Item>
+                                <Menu.Item key='2'>Đổi mật khẩu</Menu.Item>
+                                <Menu.Item
+                                    key='3'
+                                    onClick={() => {
+                                        clearUser();
+                                        router.push("/dashboard-login");
+                                    }}
+                                >
+                                    Đăng xuất
+                                </Menu.Item>
+                            </Menu>
+                        }
+                    >
+                        <Avatar>S</Avatar>
+                    </Dropdown>
                     <Button
                         type='text'
                         className='hidden tablet:block px-2'
@@ -198,7 +234,7 @@ export default function AdminLayout({ children }) {
                     <MenuBar
                         className='h-full overflow-auto overflow-x-hidden beauty-scroll text-base'
                         mode='inline'
-                        menuList={menuList(permissions || [])}
+                        menuList={menu}
                     />
                 </div>
                 <div
@@ -208,7 +244,6 @@ export default function AdminLayout({ children }) {
                         mt-20'
                 >
                     {children}
-
                 </div>
             </div>
         </section>

@@ -1,29 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import UrlBreadcrumb from "../../../src/components/common/UrlBreadcrumb";
 import AIRSENSE from "../../../src/models/AIRSENSE";
 import useUser from "../../../src/hooks/useUser";
 import PageAdminLayout from "../../../src/components/PageAdminLayout";
-import {Button, Input, Select, Switch} from "antd";
+import { Button, Input, Select, Switch, Tooltip, Modal } from "antd";
 import usePagination from "../../../src/hooks/usePagination";
 import { Table } from "antd";
 import ManifestModel from "../../../src/models/Manifest";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
+import SearchCommon from "../../../src/components/common/SearchCommon";
+import useQueryUrl from "../../../src/hooks/useQueryUrl";
+import {
+    DeleteOutlined,
+    EditOutlined,
+    FileSearchOutlined,
+} from "@ant-design/icons";
+import { useMutation } from "react-query";
+import Link from "next/Link";
 
 function Manifest({ ...props }) {
-    const router = useRouter()
+    const router = useRouter();
     const manifestBread = [
         {
             name: "Phân quyền",
         },
         {
-            name: "Danh sách phần quyền",
+            name: "Danh sách phân quyền",
         },
     ];
     const { permissions } = useUser();
-    const CAN_SEARCH_MANIFEST = AIRSENSE.canAccessFuture(
-        "SEARCH_MANIFEST",
-        permissions
-    );
+
     const CAN_CREATE_MANIFEST = AIRSENSE.canAccessFuture(
         "CREATE_MANIFEST",
         permissions
@@ -32,25 +38,59 @@ function Manifest({ ...props }) {
         "UPDATE_MANIFEST",
         permissions
     );
-    const CAN_DELETE_MANIFEST = AIRSENSE.canAccessFuture(
-        "DELETE_MANIFEST",
+
+    const CAN_ACTIVE_MANIFEST = AIRSENSE.canAccessFuture(
+        "ACTIVE_MANIFEST",
         permissions
     );
     const CAN_DETAIL_MANIFEST = AIRSENSE.canAccessFuture(
         "DETAIL_MANIFEST",
         permissions
     );
-    const {
-        configTable,
-        page,
-        pageSize,
-        refetch,
-        query,
-        onChangeOneParam,
-        getColumnSortDefault,
-    } = usePagination((params) => {
-        return ManifestModel.search(params);
-    });
+    const CAN_DELETE_MANIFEST = AIRSENSE.canAccessFuture(
+        "DELETE_MANIFEST",
+        permissions
+    );
+
+    const query = useQueryUrl();
+    const [searchName, setSearchName] = useState(query.get("role_name"));
+    const [activeStatus, setActiveStatus] = useState(query.get("is_active"));
+    const { configTable, page, pageSize, refetch, onChangeOneParam } =
+        usePagination(
+            (params) => ManifestModel.search(params),
+            ["role_name", "is_active"],
+            {
+                role_name: searchName,
+                is_active: activeStatus,
+            }
+        );
+    const ToggleActiveMutation = useMutation(
+        "toggleActive",
+        (id) => ManifestModel.toggleActive(id),
+        {
+            onSuccess: async () => {
+                refetch();
+            },
+            onError: (e) => {
+                console.log(e);
+                // Modal.error({ title: "Thay đổi trạng thái thất bại" });
+            },
+        }
+    );
+    const DeleteMutation = useMutation(
+        "deleteManifest",
+        (id) => ManifestModel.delete(id),
+        {
+            onSuccess: async () => {
+                refetch();
+            },
+            onError: (e) => {
+                console.log(e);
+                // Modal.error({ title: "Thay đổi trạng thái thất bại" });
+            },
+        }
+    );
+
     const column = [
         {
             title: "STT",
@@ -62,7 +102,6 @@ function Manifest({ ...props }) {
             title: "Tên quyền hạn",
             dataIndex: "role_name",
             key: "role_name",
-            render : (value , record )=><span onClick={()=>CAN_DETAIL_MANIFEST && router.push()}>{value}</span>
         },
         {
             title: "Nội dung",
@@ -74,30 +113,96 @@ function Manifest({ ...props }) {
             dataIndex: "is_active",
             key: "is_active",
             render: (value, record) => (
-                <Switch disabled={!CAN_DELETE_MANIFEST} checked={value === 1} />
+                <Switch
+                    disabled={!CAN_ACTIVE_MANIFEST}
+                    checked={value === 1}
+                    onChange={() =>
+                        Modal.confirm({
+                            title: "Bạn chắc chắn muốn thay đổi trạng thái hoạt động ?",
+                            onOk: () => {
+                                ToggleActiveMutation.mutate(record.id);
+                            },
+                        })
+                    }
+                />
+            ),
+        },
+        {
+            title: "Thao tác",
+            key: "action",
+            render: (value, record) => (
+                <div className='flex gap-4'>
+                    {CAN_DETAIL_MANIFEST && (
+                        <Link href={`/admin/manifest/detail/${record.id}`}>
+                            <Tooltip title='chi tiết'>
+                                <FileSearchOutlined />
+                            </Tooltip>
+                        </Link>
+                    )}
+                    {CAN_UPDATE_MANIFEST && (
+                        <Link href={`/admin/manifest/update/${record.id}`}>
+                            <Tooltip title='cập nhật'>
+                                <EditOutlined />
+                            </Tooltip>
+                        </Link>
+                    )}
+                    {CAN_DELETE_MANIFEST && (
+                        <Tooltip title='xóa'>
+                            <DeleteOutlined
+                                onClick={() =>
+                                    Modal.confirm({
+                                        title: "Bạn chắc chắn muốn xóa ?",
+                                        onOk: () => {
+                                            DeleteMutation.mutate(record.id);
+                                        },
+                                    })
+                                }
+                            />
+                        </Tooltip>
+                    )}
+                </div>
             ),
         },
     ];
-
     return (
         <section>
             <UrlBreadcrumb breadcrumbs={manifestBread} />
             <PageAdminLayout pageName='Danh sách quyền hạn'>
                 <div className='flex justify-between gap-8'>
                     <div className='flex gap-4 flex-grow'>
-                        <Input size='middle' placeHolder='Nhập tên' className='flex-1'/>
-                        <Select placeholder='Trạng thái hoạt động'  className='flex-1'>
-                            <Select.Option value={-1}>Tất cả</Select.Option>
+                        <SearchCommon
+                            size='middle'
+                            placeHolder='Nhập tên quyền hạn'
+                            className='flex-1'
+                            defaultValue={searchName}
+                            onSearch={(value) => {
+                                setSearchName(value);
+                                onChangeOneParam("role_name")(value);
+                            }}
+                        />
+                        <Select
+                            placeholder='Trạng thái hoạt động'
+                            className='flex-1'
+                            defaultValue={activeStatus}
+                            onSelect={(value) => {
+                                setActiveStatus(value);
+                                onChangeOneParam("is_active")(value);
+                            }}
+                        >
+                            <Select.Option value={null}>Tất cả</Select.Option>
                             <Select.Option value={1}>Bật</Select.Option>
                             <Select.Option value={0}>Tắt</Select.Option>
                         </Select>
                     </div>
-                    {CAN_CREATE_MANIFEST && <Button type='primary'>Thêm mới</Button>}
-
+                    {CAN_CREATE_MANIFEST && (
+                        <Button type='primary'>
+                            <Link href='/admin/manifest/create'>Thêm mới</Link>
+                        </Button>
+                    )}
                 </div>
                 <Table
                     className='mt-8'
-                    columns={getColumnSortDefault(column)}
+                    columns={column}
                     {...configTable}
                     scroll={{
                         x: 1050,

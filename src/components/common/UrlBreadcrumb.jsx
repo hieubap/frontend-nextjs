@@ -6,7 +6,7 @@ export default function UrlBreadcrumb({breadcrumbs = []}) {
 
     function render(item) {
         if (item.url) {
-            return <Link className="font-bold" to={item.url}>item.name</Link>;
+            return <Link className="font-bold" href={item.url}>{item.name}</Link>;
         }
         return item.name;
     }

@@ -1,31 +1,7 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import useUser from "../../src/hooks/useUser";
-import { isEmpty } from "../../src/utils/opLodash";
-import { Spin } from "antd";
+import React from "react";
 
-function Page({ ...props }) {
-    const router = useRouter();
-    const { user } = useUser();
-    const [isSpin, setSpin] = useState(false);
-    useEffect(() => {
-        if (isEmpty(user)) {
-            setSpin(true);
-            router.push("/dashboard-login");
-            setSpin(false)
-        }
-    }, [user]);
-
-    return (
-        <div>
-            <Spin
-                spinning={isSpin}
-                className='w-screen h-screen flex justify-center items-center'
-            >
-                <div suppressHydrationWarning>home</div>
-            </Spin>
-        </div>
-    );
+function AdminPage({ ...props }) {
+    return <section>dash board</section>;
 }
 
-export default Page;
+export default AdminPage;
