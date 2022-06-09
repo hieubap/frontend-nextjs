@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import user from "../../models/User";
 import { Button, Form, Input, Tag } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 function FormLogin({ bgImage, routePass, ...props }) {
     const styling = {
@@ -18,12 +19,14 @@ function FormLogin({ bgImage, routePass, ...props }) {
         "loginMutation",
         (body) => user.login(body),
         {
-            onSuccess: (data) => {
+            onSuccess:  async (data) => {
                 console.log("success ", data);
                 changeUser(data);
+                await setTimeout(()=>{},1000)
                 router.push(routePass);
             },
         }
+
     );
 
     const onFinish = (values) => {
@@ -57,12 +60,12 @@ function FormLogin({ bgImage, routePass, ...props }) {
                     layout='vertical'
                 >
                     <Form.Item
-                        label='Username'
+                        label='Email'
                         name='email'
                         rules={[
                             {
                                 required: true,
-                                message: "Tên đăng nhập không được bỏ trống",
+                                message: "Email không được bỏ trống",
                             },
                         ]}
                     >
@@ -90,10 +93,15 @@ function FormLogin({ bgImage, routePass, ...props }) {
                             type='primary'
                             htmlType='submit'
                             className='rounded-md w-full mb-2'
+                            loading={loginMutation.isLoading}
                         >
                             Đăng nhập
                         </Button>
-                        <Button type='default' className='rounded-md w-full'>
+                        <Button
+                            onClick={() => router.push("/registor")}
+                            type='default'
+                            className='rounded-md w-full'
+                        >
                             Đăng ký
                         </Button>
                     </Form.Item>

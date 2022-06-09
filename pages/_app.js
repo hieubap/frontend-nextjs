@@ -1,11 +1,10 @@
 import "../src/styles/globals.css";
 import "antd/dist/antd.css";
 import "../src/styles/App.scss";
-import {QueryClientProvider, QueryClient} from "react-query";
-import {store} from "../store/store";
-import {Provider} from "react-redux";
-import AppWrapper from "../src/components/AppWrapper";
-import {useRouter} from "next/router";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { store } from "../store/store";
+import { Provider } from "react-redux";
+import { useRouter } from "next/router";
 import AdminLayout from "../src/components/AdminLayout";
 
 const queryClient = new QueryClient({
@@ -25,21 +24,18 @@ const queryClient = new QueryClient({
     },
 });
 
-function MyApp({Component, pageProps}) {
+function MyApp({ Component, pageProps }) {
     const router = useRouter();
-    const isAdminPortal = router.asPath.startsWith("/admin");
     return (
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-                <AppWrapper >
-                    {isAdminPortal ? (
-                        <AdminLayout>
-                            <Component {...pageProps} />
-                        </AdminLayout>
-                    ) : (
+                {router.asPath.startsWith("/admin") ? (
+                    <AdminLayout>
                         <Component {...pageProps} />
-                    )}
-                </AppWrapper>
+                    </AdminLayout>
+                ) : (
+                    <Component {...pageProps} />
+                )}
             </QueryClientProvider>
         </Provider>
     );

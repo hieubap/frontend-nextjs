@@ -8,21 +8,20 @@ class User extends Base {
     return this.apiPost("/login", body);
   }
 
-  register(body) {
-    return this.apiPost("/register", body);
-  }
-
-  searchUser(param = {}){
-    return this.apiGet("/search", param);
-  }
-  update(body){
-    return this.apiPut("/self-update/" + body.id, body);
-  }
-  createUser(body){
-    return this.apiPost("/insert", body);
-  }
-  updateUser(body,id){
-    return this.apiPut("/update/" + id, body);
-  }
+    register(body) {
+        return this.apiPost("/register", body);
+    }
+    getUser() {
+        return this.apiGet(`/info`);
+    }
+    getInfo(){
+      return this.apiGet("/info")
+    }
+    changeProFile(body, id) {
+        return this.apiPut(`/self-update/${id}`, body);
+    }
+    changePassword(body) {
+        return this.apiPost(`/change-password`, body);
+    }
 }
 export default new User();

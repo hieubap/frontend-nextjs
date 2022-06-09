@@ -961,3 +961,33 @@ a {
     line-height: 1;
   }
 }
+
+.ant-switch-checked {
+  background-color: #5bb98e;
+}
+
+.ant-select-selector {
+  border-radius: 12px !important;
+}
+
+.ant-input {
+  border-radius: 12px !important;
+}
+
+.ant-btn {
+  border-radius: 8px !important;
+}
+
+.ant-input-group-wrapper {
+
+  button {
+    border-radius: 0px 12px 12px 0px !important;
+  }
+
+  input {
+    border-radius: 12px 0px 0px 12px  !important;
+  }
+  .ant-input-wrapper {
+    border-radius: 12px !important;
+  }
+}
