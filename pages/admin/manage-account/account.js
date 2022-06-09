@@ -1,11 +1,9 @@
-import { Switch, Table, Tabs } from "antd";
+import { Tabs } from "antd";
 import React from "react";
-import Action from "../../../src/components/Action";
 import Breadcrumb from "../../../src/components/Breadcrumb";
 import ChangePassword from "../../../src/container/change-password";
 import InfoAccount from "../../../src/container/info-account";
 import { WrapperContainer } from "../../../src/layout/style/styled";
-import { dataKhach } from "../../dataTest";
 
 const index = (props) => {
     const breadcrumb = [

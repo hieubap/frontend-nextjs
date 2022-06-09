@@ -991,3 +991,28 @@ a {
     border-radius: 12px !important;
   }
 }
+
+.wrapper-admin-layout{
+  max-width: calc(100vw - 256px - 3rem);
+  
+  .wrapper-detail{
+    .ant-col-8 {
+      padding: 10px 0;
+      label {
+        border-bottom: 1px solid;
+      }
+      p {
+        padding: 0 10px 0 0;
+        margin-top: 3px;
+        line-height: 18px;
+        font-weight: bold;
+      }
+    }
+  }
+  .avatar-upload-input{
+    img{
+      max-width: 100px;
+      max-height: 100px;
+    }
+  }
+}

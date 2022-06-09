@@ -3,7 +3,6 @@ import React from "react";
 import Action from "../../../src/components/Action";
 import Breadcrumb from "../../../src/components/Breadcrumb";
 import { WrapperContainer } from "../../../src/layout/style/styled";
-import { dataKhach } from "../../dataTest";
 
 const index = (props) => {
     const columns = [
@@ -53,7 +52,7 @@ const index = (props) => {
         <WrapperContainer>
             <Breadcrumb data={breadcrumb} />
             <div className='wrap-table'>
-                <Table columns={columns} dataSource={dataKhach}></Table>
+                <Table columns={columns} dataSource={[]}></Table>
             </div>
         </WrapperContainer>
     );

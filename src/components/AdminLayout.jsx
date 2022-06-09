@@ -36,12 +36,12 @@ export default function AdminLayout({ children }) {
                         FEATURE_PERMISSION.SEARCH_CUSTOMER,
                         permissions
                     ),
-                    url: "/admin/manage-account/customer",
+                    url: "/admin/customer",
                 },
                 {
                     id: "1.3",
                     title: "Danh sách quản trị viên",
-                    url: "/admin/manage-account/collaborator",
+                    url: "/admin/admin",
                     isHide: !AIRSENSE.canAccessFuture(
                         FEATURE_PERMISSION.SEARCH_ADMIN,
                         permissions
@@ -53,18 +53,18 @@ export default function AdminLayout({ children }) {
                     url: "/admin/manage-account/profile",
                     isHide: false,
                 },
-                {
-                    id: "1.4",
-                    title: "Thông tin tài khoản",
-                    url: "/admin/manage-account/profile",
-                    isHide: false,
-                },
-                {
-                    id: "1.4",
-                    title: "Thông tin tài khoản",
-                    url: "/admin/manage-account/account",
-                    isHide: false,
-                },
+                // {
+                //     id: "1.4",
+                //     title: "Thông tin tài khoản",
+                //     url: "/admin/manage-account/profile",
+                //     isHide: false,
+                // },
+                // {
+                //     id: "1.4",
+                //     title: "Thông tin tài khoản",
+                //     url: "/admin/manage-account/account",
+                //     isHide: false,
+                // },
             ],
         },
         {

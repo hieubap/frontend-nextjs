@@ -1,8 +1,8 @@
 import Base from "./Base";
 
-class Manifest extends Base {
+class Admin extends Base {
     constructor() {
-        super("/customer");
+        super("/admin");
     }
 
     search(queryObj) {
@@ -30,4 +30,4 @@ class Manifest extends Base {
     }
 }
 
-export default new Manifest();
+export default new Admin();
