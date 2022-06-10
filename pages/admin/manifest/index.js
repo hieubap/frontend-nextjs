@@ -16,7 +16,7 @@ import {
     FileSearchOutlined,
 } from "@ant-design/icons";
 import { useMutation } from "react-query";
-import Link from "next/Link";
+import Link from "next/link";
 
 function Manifest({ ...props }) {
     const router = useRouter();

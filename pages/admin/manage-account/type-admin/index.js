@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import { Button, message, Modal, Select, Switch, Table, Tooltip } from "antd";
 import moment from "moment";
-import Link from "next/Link";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
