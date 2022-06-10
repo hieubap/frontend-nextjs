@@ -34,6 +34,20 @@ export const FEATURE_PERMISSION = {
     SEARCH_ADMIN: "SEARCH_ADMIN",
     ACTIVE_ADMIN: "ACTIVE_ADMIN",
 };
+export const GIOI_TINH = [
+    {
+        value: 1,
+        label: "Nam",
+    },
+    {
+        value: 2,
+        label: "Nữ",
+    },
+];
+
+
+
+Object.freeze(GIOI_TINH);
 Object.freeze(CONSTANT);
 Object.freeze(FEATURE_PERMISSION);
 

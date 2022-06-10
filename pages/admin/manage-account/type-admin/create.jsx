@@ -1,11 +1,11 @@
 import React from "react";
-import UrlBreadcrumb from "../../../src/components/common/UrlBreadcrumb";
-import PageAdminLayout from "../../../src/components/PageAdminLayout";
+import UrlBreadcrumb from "../../../../src/components/common/UrlBreadcrumb";
+import PageAdminLayout from "../../../../src/components/PageAdminLayout";
 import { message, Spin } from "antd";
-import FormAdmin from "../../../src/components/admin/FormAdmin";
+import FormAdmin from "../../../../src/components/forms/FormAdmin";
 import { useForm } from "antd/lib/form/Form";
 import { useMutation } from "react-query";
-import AdminModel from "../../../src/models/Admin";
+import AdminModel from "../../../../src/models/Admin";
 import { useRouter } from "next/router";
 
 function Create({ ...props }) {
@@ -18,7 +18,7 @@ function Create({ ...props }) {
         },
         {
             name: "Danh sách quản trị viên",
-            url: "/admin/admin",
+            url: "/admin/manage-account/type-admin",
         },
         {
             name: "Thêm mới quản trị viên",
@@ -31,7 +31,7 @@ function Create({ ...props }) {
             onSuccess: (data) => {
                 if (data.status === "ok") {
                     message.success(data.msg);
-                    router.push("/admin/admin");
+                    router.push("/admin/manage-account/type-admin");
                 }
             },
             onError: (e) => {

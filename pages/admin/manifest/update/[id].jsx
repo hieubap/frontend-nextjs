@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "react-query";
 import ManifestModel from "../../../../src/models/Manifest";
 import { Button, Form, Input, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import FormManifest from "../../../../src/components/manifest/FormManifest";
+import FormManifest from "../../../../src/components/forms/FormManifest";
 
 function ManifestDetail({ ...props }) {
     const router = useRouter();

@@ -19,10 +19,8 @@ function FormLogin({ bgImage, routePass, ...props }) {
         "loginMutation",
         (body) => user.login(body),
         {
-            onSuccess:  async (data) => {
-                console.log("success ", data);
+            onSuccess:  (data) => {
                 changeUser(data);
-                await setTimeout(()=>{},1000)
                 router.push(routePass);
             },
         }

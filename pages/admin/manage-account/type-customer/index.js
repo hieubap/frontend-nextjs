@@ -9,47 +9,47 @@ import Link from "next/Link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
-import SearchCommon from "../../../src/components/common/SearchCommon";
-import UrlBreadcrumb from "../../../src/components/common/UrlBreadcrumb";
-import PageAdminLayout from "../../../src/components/PageAdminLayout";
-import usePagination from "../../../src/hooks/usePagination";
-import useQueryUrl from "../../../src/hooks/useQueryUrl";
-import useUser from "../../../src/hooks/useUser";
-import AIRSENSE from "../../../src/models/AIRSENSE";
-import AdminModel from "../../../src/models/Admin";
-import { GIOI_TINH } from "../../../src/variables";
+import SearchCommon from "../../../../src/components/common/SearchCommon";
+import UrlBreadcrumb from "../../../../src/components/common/UrlBreadcrumb";
+import PageAdminLayout from "../../../../src/components/PageAdminLayout";
+import usePagination from "../../../../src/hooks/usePagination";
+import useQueryUrl from "../../../../src/hooks/useQueryUrl";
+import useUser from "../../../../src/hooks/useUser";
+import AIRSENSE from "../../../../src/models/AIRSENSE";
+import CustomerModel from "../../../../src/models/Customer";
+import { GIOI_TINH } from "../../../../src/utils/constant";
 
-function Admin({ ...props }) {
+function Customer({ ...props }) {
     const router = useRouter();
-    const adminBread = [
+    const customerBread = [
         {
             name: "Quản lý tài khoản",
         },
         {
-            name: "Danh sách quản trị viên",
+            name: "Danh sách khách hàng",
         },
     ];
     const { permissions } = useUser();
 
-    const CAN_CREATE_ADMIN = AIRSENSE.canAccessFuture(
-        "CREATE_ADMIN",
+    const CAN_CREATE_CUSTOMER = AIRSENSE.canAccessFuture(
+        "CREATE_CUSTOMER",
         permissions
     );
-    const CAN_UPDATE_ADMIN = AIRSENSE.canAccessFuture(
-        "UPDATE_ADMIN",
+    const CAN_UPDATE_CUSTOMER = AIRSENSE.canAccessFuture(
+        "UPDATE_CUSTOMER",
         permissions
     );
 
-    const CAN_ACTIVE_ADMIN = AIRSENSE.canAccessFuture(
-        "ACTIVE_ADMIN",
+    const CAN_ACTIVE_CUSTOMER = AIRSENSE.canAccessFuture(
+        "ACTIVE_CUSTOMER",
         permissions
     );
-    const CAN_DETAIL_ADMIN = AIRSENSE.canAccessFuture(
-        "DETAIL_ADMIN",
+    const CAN_DETAIL_CUSTOMER = AIRSENSE.canAccessFuture(
+        "DETAIL_CUSTOMER",
         permissions
     );
-    const CAN_DELETE_ADMIN = AIRSENSE.canAccessFuture(
-        "DELETE_ADMIN",
+    const CAN_DELETE_CUSTOMER = AIRSENSE.canAccessFuture(
+        "DELETE_CUSTOMER",
         permissions
     );
 
@@ -67,7 +67,7 @@ function Admin({ ...props }) {
     const [activeStatus, setActiveStatus] = useState(query.get("is_active"));
     const { configTable, page, pageSize, refetch, onChangeOneParam } =
         usePagination(
-            (params) => AdminModel.search(params),
+            (params) => CustomerModel.search(params),
             ["role_name", "is_active"],
             {
                 email: searchEmail,
@@ -79,7 +79,7 @@ function Admin({ ...props }) {
         );
     const ToggleActiveMutation = useMutation(
         "toggleActive",
-        (id) => AdminModel.toggleActive(id),
+        (id) => CustomerModel.toggleActive(id),
         {
             onSuccess: async () => {
                 refetch();
@@ -91,8 +91,8 @@ function Admin({ ...props }) {
         }
     );
     const DeleteMutation = useMutation(
-        "deleteAdmin",
-        (id) => AdminModel.delete(id),
+        "deleteCustomer",
+        (id) => CustomerModel.delete(id),
         {
             onSuccess: async (data) => {
                 message.success(data.message || "Xóa thành công");
@@ -165,7 +165,7 @@ function Admin({ ...props }) {
             width: 200,
             render: (value, record) => (
                 <Switch
-                    disabled={!CAN_ACTIVE_ADMIN}
+                    disabled={!CAN_ACTIVE_CUSTOMER}
                     checked={value === 1}
                     onChange={() =>
                         Modal.confirm({
@@ -185,8 +185,8 @@ function Admin({ ...props }) {
             fixed: "right",
             render: (value, record) => (
                 <div className='flex gap-4'>
-                    {CAN_DETAIL_ADMIN && (
-                        <Link href={`/admin/admin/detail/${record.id}`}>
+                    {CAN_DETAIL_CUSTOMER && (
+                        <Link href={`/admin/manage-account/type-customer/detail/${record.id}`}>
                             <Tooltip title='chi tiết'>
                                 <FileSearchOutlined
                                     style={{ fontSize: 20, color: "#2c3d94" }}
@@ -194,8 +194,8 @@ function Admin({ ...props }) {
                             </Tooltip>
                         </Link>
                     )}
-                    {CAN_UPDATE_ADMIN && (
-                        <Link href={`/admin/admin/update/${record.id}`}>
+                    {CAN_UPDATE_CUSTOMER && (
+                        <Link href={`/admin/manage-account/type-customer/update/${record.id}`}>
                             <Tooltip title='cập nhật'>
                                 <EditOutlined
                                     style={{ fontSize: 20, color: "#2c3d94" }}
@@ -203,7 +203,7 @@ function Admin({ ...props }) {
                             </Tooltip>
                         </Link>
                     )}
-                    {CAN_DELETE_ADMIN && (
+                    {CAN_DELETE_CUSTOMER && (
                         <Tooltip title='xóa'>
                             <DeleteOutlined
                                 onClick={() =>
@@ -224,8 +224,8 @@ function Admin({ ...props }) {
     ];
     return (
         <section>
-            <UrlBreadcrumb breadcrumbs={adminBread} />
-            <PageAdminLayout pageName='Danh sách quản trị viên'>
+            <UrlBreadcrumb breadcrumbs={customerBread} />
+            <PageAdminLayout pageName='Danh sách khách hàng'>
                 <div className='flex justify-between gap-8'>
                     <div className='flex gap-4 flex-grow'>
                         <SearchCommon
@@ -282,9 +282,9 @@ function Admin({ ...props }) {
                             <Select.Option value={0}>Tắt</Select.Option>
                         </Select>
                     </div>
-                    {CAN_CREATE_ADMIN && (
+                    {CAN_CREATE_CUSTOMER && (
                         <Button type='primary'>
-                            <Link href='/admin/admin/create'>Thêm mới</Link>
+                            <Link href='/admin/manage-account/type-customer/create'>Thêm mới</Link>
                         </Button>
                     )}
                 </div>
@@ -301,4 +301,4 @@ function Admin({ ...props }) {
     );
 }
 
-export default Admin;
+export default Customer;

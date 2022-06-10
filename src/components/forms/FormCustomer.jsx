@@ -1,10 +1,11 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { GIOI_TINH } from "../../variables";
+import { Button, Form, Input, Select, DatePicker, Upload, Image } from "antd";
+import { useRouter } from "next/router";
+import { GIOI_TINH } from "../../utils/constant";
+import { PlusOutlined } from "@ant-design/icons";
+import CustomerModel from "../../models/Customer";
 
-function FormAdmin({
+function FormManifest({
     errorValue = {},
     form,
     onFinish,
@@ -14,7 +15,9 @@ function FormAdmin({
     apiUpdateAvatar,
     avatar,
 }) {
+    const [file, setFile] = useState();
     const router = useRouter();
+
     return (
         <Form
             form={form}
@@ -27,7 +30,7 @@ function FormAdmin({
                     fileList={[]}
                     name='file'
                     className='avatar-upload-input'
-                    listType={"picture-card"}
+                    listType={file?.base64 ? "text" : "picture-card"}
                     showUploadList={false}
                     customRequest={
                         apiUpdateAvatar
@@ -154,7 +157,7 @@ function FormAdmin({
                         Cập nhật
                     </Button>
                     <Button
-                        onClick={() => router.push("/admin/customer")}
+                        onClick={() => router.push("/admin/manage-account/type-customer")}
                         type='default'
                     >
                         Hủy
@@ -165,4 +168,4 @@ function FormAdmin({
     );
 }
 
-export default FormAdmin;
+export default FormManifest;

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import UrlBreadcrumb from "../../../../src/components/common/UrlBreadcrumb";
-import PageAdminLayout from "../../../../src/components/PageAdminLayout";
+import UrlBreadcrumb from "../../../../../src/components/common/UrlBreadcrumb";
+import PageAdminLayout from "../../../../../src/components/PageAdminLayout";
 import { useMutation, useQuery } from "react-query";
-import AdminModel from "../../../../src/models/Admin";
+import CustomerModel from "../../../../../src/models/Customer";
 import { Button, Form, Input, message, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import FormAdmin from "../../../../src/components/admin/FormAdmin";
+import FormCustomer from "../../../../../src/components/forms/FormCustomer";
 
-function AdminDetail({ ...props }) {
+function CustomerDetail({ ...props }) {
     const router = useRouter();
     const { id } = router.query;
     const [form] = useForm();
@@ -16,8 +16,8 @@ function AdminDetail({ ...props }) {
     const [avatar, setAvatar] = useState();
 
     const { isLoading, refetch } = useQuery(
-        "getDetailAdmin",
-        () => AdminModel.detail(id),
+        "getDetailCustomer",
+        () => CustomerModel.detail(id),
         {
             enabled: !!id,
             onSuccess: (data) => {
@@ -29,14 +29,14 @@ function AdminDetail({ ...props }) {
             },
         }
     );
-    const updateAdminMutation = useMutation(
-        "updateAdmin",
-        (body) => AdminModel.apiPut(id, body),
+    const updateCustomerMutation = useMutation(
+        "updateCustomer",
+        (body) => CustomerModel.apiPut(id, body),
         {
             onSuccess: (data) => {
                 if (data.status === "ok") {
                     message.success(data.msg);
-                    router.push("/admin/admin");
+                    router.push("/admin/customer");
                 }
             },
             onError: (e) => {
@@ -63,20 +63,20 @@ function AdminDetail({ ...props }) {
         }
     );
 
-    const updateAdminBread = [
+    const updateCustomerBread = [
         {
             name: "Quản lý tài khoản",
         },
         {
-            name: "Danh sách quản trị viên",
-            url: "/admin/admin",
+            name: "Danh sách khách hàng",
+            url: "/admin/customer",
         },
         {
-            name: "Cập nhật quản trị viên",
+            name: "Cập nhật khách hàng",
         },
     ];
     const onFinish = (values) => {
-        updateAdminMutation.mutate(values);
+        updateCustomerMutation.mutate(values);
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -85,7 +85,7 @@ function AdminDetail({ ...props }) {
 
     const UpdateAvatarMutation = useMutation(
         "updateAvatar",
-        (body) => AdminModel.apiPut("/update-avatar/" + id, body),
+        (body) => CustomerModel.apiPut("/update-avatar/" + id, body),
         {
             onSuccess: async (data) => {
                 refetch();
@@ -99,14 +99,14 @@ function AdminDetail({ ...props }) {
     );
     return (
         <section>
-            <UrlBreadcrumb breadcrumbs={updateAdminBread} />
-            <PageAdminLayout pageName='Cập nhật quản trị viên'>
+            <UrlBreadcrumb breadcrumbs={updateCustomerBread} />
+            <PageAdminLayout pageName='Cập nhật khách hàng'>
                 <Spin spinning={isLoading || loading}>
-                    <FormAdmin
+                    <FormCustomer
                         form={form}
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
-                        loading={updateAdminMutation.isLoading}
+                        loading={updateCustomerMutation.isLoading}
                         apiUpdateAvatar={({ file }) => {
                             const formData = new FormData();
                             formData.append("file", file);
@@ -122,4 +122,4 @@ function AdminDetail({ ...props }) {
     );
 }
 
-export default AdminDetail;
+export default CustomerDetail;

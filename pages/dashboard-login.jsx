@@ -1,5 +1,5 @@
 import React from "react";
-import FormLogin from "../src/components/common/FormLogin";
+import FormLogin from "../src/components/forms/FormLogin";
 import { useRouter } from "next/router";
 
 function DashboardLogin({ ...props }) {

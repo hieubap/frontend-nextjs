@@ -1,7 +1,7 @@
 import { SaveOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Form, Input, message, Select } from "antd";
 import React from "react";
-import { StyledAccount } from "../../layout/style/account";
+import { StyledAccount } from "../../styles/styledComponent/account";
 
 const InfoAccount = (props) => {
     const onFinish = ({ oldPass, password, password2 }) => {

@@ -1,11 +1,11 @@
 import React from "react";
 import { useRouter } from "next/router";
-import UrlBreadcrumb from "../../../../src/components/common/UrlBreadcrumb";
-import PageAdminLayout from "../../../../src/components/PageAdminLayout";
+import UrlBreadcrumb from "../../../../../src/components/common/UrlBreadcrumb";
+import PageAdminLayout from "../../../../../src/components/PageAdminLayout";
 import { useQuery } from "react-query";
-import AdminModel from "../../../../src/models/Admin";
+import AdminModel from "../../../../../src/models/Admin";
 import { Col, Row, Spin, Switch } from "antd";
-import { GIOI_TINH } from "../../../../src/variables";
+import { GIOI_TINH } from "../../../../../src/utils/constant";
 import moment from "moment";
 
 function AdminDetail({ ...props }) {
@@ -26,7 +26,7 @@ function AdminDetail({ ...props }) {
         },
         {
             name: "Danh sách quản trị viên",
-            url: "/admin/admin",
+            url: "/admin/manage-account/type-admin",
         },
         {
             name: "Chi tiết quản trị viên",

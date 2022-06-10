@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { Button, Form, Input, Select, DatePicker, Upload, Image } from "antd";
-import { useRouter } from "next/router";
-import { GIOI_TINH } from "../../variables";
 import { PlusOutlined } from "@ant-design/icons";
-import CustomerModel from "../../models/Customer";
+import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { GIOI_TINH } from "../../utils/constant";
 
-function FormManifest({
+function FormAdmin({
     errorValue = {},
     form,
     onFinish,
@@ -15,23 +14,7 @@ function FormManifest({
     apiUpdateAvatar,
     avatar,
 }) {
-    const [file, setFile] = useState();
     const router = useRouter();
-    // function getBase64(file) {
-    //     var reader = new FileReader();
-    //     reader.readAsDataURL(file);
-    //     reader.onload = function () {
-    //         setFile({ ...file, base64: reader.result });
-    //     };
-    //     reader.onerror = function (error) {
-    //         console.log("Error: ", error);
-    //     };
-    // }
-    // const handleSubmit = (values) => {
-    //     if (file.base64) {
-    //         CustomerModel.apiPostWithoutPrefixDownload();
-    //     }
-    // };
     return (
         <Form
             form={form}
@@ -44,7 +27,7 @@ function FormManifest({
                     fileList={[]}
                     name='file'
                     className='avatar-upload-input'
-                    listType={file?.base64 ? "text" : "picture-card"}
+                    listType={"picture-card"}
                     showUploadList={false}
                     customRequest={
                         apiUpdateAvatar
@@ -171,7 +154,7 @@ function FormManifest({
                         Cập nhật
                     </Button>
                     <Button
-                        onClick={() => router.push("/admin/customer")}
+                        onClick={() => router.push("/admin/manage-account/type-admin")}
                         type='default'
                     >
                         Hủy
@@ -182,4 +165,4 @@ function FormManifest({
     );
 }
 
-export default FormManifest;
+export default FormAdmin;

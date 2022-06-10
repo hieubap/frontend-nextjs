@@ -17,14 +17,16 @@ export const setToken = (access) => {
     }
 };
 export const clearToken = () => setToken(null);
-let accessInfo;
-try {
-    accessInfo = JSON.parse(Cookie.get("token"));
-} catch {
-    accessInfo = null;
-}
 
 const attachToken = (req) => {
+    let accessInfo;
+    try {
+        accessInfo = JSON.parse(
+            Cookie.get("token") || document.cookie.replaceAll("token", "")
+        );
+    } catch {
+        accessInfo = null;
+    }
     if (accessInfo) {
         req.set("Authorization", `Bearer ${accessInfo}`);
     }

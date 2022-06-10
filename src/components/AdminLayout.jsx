@@ -36,12 +36,12 @@ export default function AdminLayout({ children }) {
                         FEATURE_PERMISSION.SEARCH_CUSTOMER,
                         permissions
                     ),
-                    url: "/admin/customer",
+                    url: "/admin/manage-account/type-customer",
                 },
                 {
                     id: "1.3",
                     title: "Danh sách quản trị viên",
-                    url: "/admin/admin",
+                    url: "/admin/manage-account/type-admin",
                     isHide: !AIRSENSE.canAccessFuture(
                         FEATURE_PERMISSION.SEARCH_ADMIN,
                         permissions
@@ -53,18 +53,6 @@ export default function AdminLayout({ children }) {
                     url: "/admin/manage-account/profile",
                     isHide: false,
                 },
-                // {
-                //     id: "1.4",
-                //     title: "Thông tin tài khoản",
-                //     url: "/admin/manage-account/profile",
-                //     isHide: false,
-                // },
-                // {
-                //     id: "1.4",
-                //     title: "Thông tin tài khoản",
-                //     url: "/admin/manage-account/account",
-                //     isHide: false,
-                // },
             ],
         },
         {
@@ -210,7 +198,9 @@ export default function AdminLayout({ children }) {
                         trigger='click'
                         overlay={
                             <Menu mode='vertical'>
-                                <Menu.Item key='1'>
+                                <Menu.Item key='1'  onClick={() => {
+                                    router.push("/admin/manage-account/profile");
+                                }}>
                                     Thông tin tài khoản
                                 </Menu.Item>
                                 <Menu.Item key='2'>Đổi mật khẩu</Menu.Item>

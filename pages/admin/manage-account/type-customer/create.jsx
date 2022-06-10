@@ -1,11 +1,11 @@
 import React from "react";
-import UrlBreadcrumb from "../../../src/components/common/UrlBreadcrumb";
-import PageAdminLayout from "../../../src/components/PageAdminLayout";
+import UrlBreadcrumb from "../../../../src/components/common/UrlBreadcrumb";
+import PageAdminLayout from "../../../../src/components/PageAdminLayout";
 import { message, Spin } from "antd";
-import FormCustomer from "../../../src/components/customer/FormCustomer";
+import FormCustomer from "../../../../src/components/forms/FormCustomer";
 import { useForm } from "antd/lib/form/Form";
 import { useMutation } from "react-query";
-import CustomerModel from "../../../src/models/Customer";
+import CustomerModel from "../../../../src/models/Customer";
 import { useRouter } from "next/router";
 
 function Create({ ...props }) {
@@ -18,7 +18,7 @@ function Create({ ...props }) {
         },
         {
             name: "Danh sách khách hàng",
-            url: "/admin/customer",
+            url: "/admin/manage-account/type-customer",
         },
         {
             name: "Thêm mới khách hàng",
@@ -31,7 +31,7 @@ function Create({ ...props }) {
             onSuccess: (data) => {
                 if (data.status === "ok") {
                     message.success(data.msg);
-                    router.push("/admin/customer");
+                    router.push("/admin/manage-account/type-customer");
                 }
             },
             onError: (e) => {

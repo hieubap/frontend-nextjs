@@ -1,11 +1,11 @@
 import React from "react";
 import { useRouter } from "next/router";
-import UrlBreadcrumb from "../../../../src/components/common/UrlBreadcrumb";
-import PageAdminLayout from "../../../../src/components/PageAdminLayout";
+import UrlBreadcrumb from "../../../../../src/components/common/UrlBreadcrumb";
+import PageAdminLayout from "../../../../../src/components/PageAdminLayout";
 import { useQuery } from "react-query";
-import CustomerModel from "../../../../src/models/Customer";
+import CustomerModel from "../../../../../src/models/Customer";
 import { Col, Row, Spin, Switch } from "antd";
-import { GIOI_TINH } from "../../../../src/variables";
+import { GIOI_TINH } from "../../../../../src/utils/constant";
 import moment from "moment";
 
 function CustomerDetail({ ...props }) {
@@ -26,7 +26,7 @@ function CustomerDetail({ ...props }) {
         },
         {
             name: "Danh sách khách hàng",
-            url: "/admin/customer",
+            url: "/admin/manage-account/type-customer",
         },
         {
             name: "Chi tiết khách hàng",

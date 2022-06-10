@@ -2,7 +2,7 @@ import React from "react";
 import UrlBreadcrumb from "../../../src/components/common/UrlBreadcrumb";
 import PageAdminLayout from "../../../src/components/PageAdminLayout";
 import { Spin } from "antd";
-import FormManifest from "../../../src/components/manifest/FormManifest";
+import FormManifest from "../../../src/components/forms/FormManifest";
 import { useForm } from "antd/lib/form/Form";
 import { useMutation } from "react-query";
 import ManifestModel from "../../../src/models/Manifest";
